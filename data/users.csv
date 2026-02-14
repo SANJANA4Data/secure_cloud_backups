@@ -1,0 +1,6 @@
+﻿USER_ID,NAME,ROLE ,DEPARTMENT,LOCATION,DEVICE
+U101,Arjun Sharma,Admin,IT,Office,Corporate
+U102,Priya Patel,Owner,Finance,Office,Corporate
+U103,Ishaan Iyer,Restorer,Operations,Remote,Personal
+U104,Ananya Reddy,Viewer,Marketing,Office,Corporate
+U105,Rahul Verma,Admin,IT,Remote,Personal

@@ -1,0 +1,6 @@
+﻿User_ID,Backup_ID,Action,Timestamp,IP,Device,Status,Reason
+U104,B001,Restore,13-02-2026 22:30,192.168.1.25,Corporate,Denied,Viewer cannot restore
+U102,B001,Download,13-02-2026 22:45,192.168.1.30,Corporate,Allowed,Owner download allowed
+U101,B002,Delete,13-02-2026 23:20,192.168.1.40,Corporate,Allowed,Admin delete allowed
+U103,B003,Restore,14-02-2026 09:45,192.168.1.50,Personal,Allowed,Restorer restore allowed
+U105,B005,Delete,14-02-2026 11:15,192.168.1.60,Personal,Denied,Admin delete restricted (device not corporate)
