@@ -1,0 +1,12 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore zip archives
+*.zip
+
+# Ignore logs
+*.log
+
+# Ignore database files
+*.db
