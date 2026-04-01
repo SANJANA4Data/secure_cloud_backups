@@ -30,9 +30,18 @@ def init_db():
                 timestamp    TEXT NOT NULL,
                 version      INTEGER NOT NULL,
                 size         INTEGER NOT NULL,
-                restore_count INTEGER DEFAULT 0
+                restore_count INTEGER DEFAULT 0,
+                checksum     TEXT NOT NULL DEFAULT ''
             )
         """)
+        # Migrate existing databases that pre-date the checksum column
+        cursor.execute("PRAGMA table_info(backups)")
+        cols = [row[1] for row in cursor.fetchall()]
+        if "checksum" not in cols:
+            cursor.execute(
+                "ALTER TABLE backups ADD COLUMN checksum TEXT NOT NULL DEFAULT ''"
+            )
+            logger.info("Migrated backups table: added checksum column")
         conn.commit()
         conn.close()
         logger.debug("backups table initialised")
@@ -66,16 +75,16 @@ def init_audit_log():
 # Backup metadata functions
 # -----------------------------
 
-def insert_backup(backup_id, user_id, version, size, folder_path=""):
+def insert_backup(backup_id, user_id, version, size, folder_path="", checksum=""):
     try:
         conn = _connect()
         cursor = conn.cursor()
         timestamp = datetime.now().isoformat()
         cursor.execute(
             "INSERT INTO backups "
-            "(backup_id, user_id, folder_path, timestamp, version, size, restore_count) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (backup_id, user_id, folder_path, timestamp, version, size, 0),
+            "(backup_id, user_id, folder_path, timestamp, version, size, restore_count, checksum) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (backup_id, user_id, folder_path, timestamp, version, size, 0, checksum),
         )
         conn.commit()
         conn.close()
@@ -99,6 +108,41 @@ def get_next_version(user_id, folder_path):
         return (row[0] or 0) + 1
     except sqlite3.Error as exc:
         logger.error("Failed to get next version for user=%s folder=%s: %s", user_id, folder_path, exc)
+        raise
+
+
+def list_versions_for_folder(user_id, folder_path):
+    """Return backup IDs for (user_id, folder_path) sorted by version ascending."""
+    try:
+        conn = _connect()
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT backup_id FROM backups "
+            "WHERE user_id = ? AND folder_path = ? "
+            "ORDER BY version ASC",
+            (user_id, folder_path),
+        )
+        rows = cursor.fetchall()
+        conn.close()
+        return [row[0] for row in rows]
+    except sqlite3.Error as exc:
+        logger.error(
+            "Failed to list versions for user=%s folder=%s: %s", user_id, folder_path, exc
+        )
+        raise
+
+
+def get_checksum(backup_id):
+    """Return the stored SHA-256 checksum for *backup_id*, or None if not found."""
+    try:
+        conn = _connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT checksum FROM backups WHERE backup_id = ?", (backup_id,))
+        row = cursor.fetchone()
+        conn.close()
+        return row[0] if row else None
+    except sqlite3.Error as exc:
+        logger.error("Failed to get checksum for backup %s: %s", backup_id, exc)
         raise
 
 

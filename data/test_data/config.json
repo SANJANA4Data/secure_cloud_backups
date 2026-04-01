@@ -1,0 +1,9 @@
+{
+  "app": "secure_cloud_backups",
+  "version": "1.0.0",
+  "settings": {
+    "max_versions": 3,
+    "encryption": "AES-256-GCM",
+    "hash_algorithm": "SHA-256"
+  }
+}

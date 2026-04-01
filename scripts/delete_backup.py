@@ -21,11 +21,11 @@ def delete_backup(backup_id, user_id):
     # Remove database record first
     db_utils.delete_backup(backup_id)
 
-    # Remove the ZIP archive if it exists
-    zip_path = os.path.join(CLOUD_DIR, f"{backup_id}.zip")
-    if os.path.exists(zip_path):
-        os.remove(zip_path)
-        logger.info("Removed archive %s", zip_path)
+    # Remove the encrypted archive if it exists
+    enc_path = os.path.join(CLOUD_DIR, f"{backup_id}.zip.enc")
+    if os.path.exists(enc_path):
+        os.remove(enc_path)
+        logger.info("Removed archive %s", enc_path)
 
     db_utils.log_action("BACKUP_DELETED", backup_id, user_id)
     logger.info("Backup %s deleted by %s", backup_id, user_id)

@@ -11,6 +11,9 @@ sys.path.insert(0, BASE_DIR)
 from utils import db_utils
 from utils.config import CLOUD_DIR
 from utils.rbac import enforce_rbac
+from utils.crypto import encrypt_file
+from utils.integrity import sha256_file
+from utils.retention import apply_retention
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +39,7 @@ def backup_folder(user_id, folder_path):
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S%f")
     backup_id = f"B{timestamp}"
     zip_path = os.path.join(CLOUD_DIR, f"{backup_id}.zip")
+    enc_path = os.path.join(CLOUD_DIR, f"{backup_id}.zip.enc")
 
     with zipfile.ZipFile(zip_path, "w") as zipf:
         for root, _, files in os.walk(folder_path):
@@ -44,11 +48,25 @@ def backup_folder(user_id, folder_path):
                 arcname = os.path.relpath(full_path, folder_path)
                 zipf.write(full_path, arcname)
 
-    size = os.path.getsize(zip_path)
-    db_utils.insert_backup(backup_id, user_id, version, size, folder_path=abs_folder)
+    # Encrypt the ZIP archive, then remove the plaintext copy
+    encrypt_file(zip_path, enc_path)
+    os.remove(zip_path)
+
+    size = os.path.getsize(enc_path)
+    checksum = sha256_file(enc_path)
+
+    db_utils.insert_backup(
+        backup_id, user_id, version, size, folder_path=abs_folder, checksum=checksum
+    )
     db_utils.log_action("BACKUP_CREATED", backup_id, user_id)
 
-    logger.info("Backup created: %s  size=%d bytes  version=%d", backup_id, size, version)
+    # Enforce retention policy (prune oldest versions beyond MAX_VERSIONS)
+    apply_retention(user_id, abs_folder)
+
+    logger.info(
+        "Backup created: %s  size=%d bytes  version=%d  checksum=%s",
+        backup_id, size, version, checksum,
+    )
     return backup_id
 
 

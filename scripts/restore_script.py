@@ -3,6 +3,7 @@ import os
 import zipfile
 import logging
 import argparse
+import tempfile
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
@@ -10,6 +11,8 @@ sys.path.insert(0, BASE_DIR)
 from utils import db_utils
 from utils.config import CLOUD_DIR, RESTORE_DIR
 from utils.rbac import enforce_rbac
+from utils.crypto import decrypt_file
+from utils.integrity import verify_integrity
 
 logger = logging.getLogger(__name__)
 
@@ -24,18 +27,32 @@ def restore_backup(backup_id, user_id):
 
     os.makedirs(RESTORE_DIR, exist_ok=True)
 
-    zip_path = os.path.join(CLOUD_DIR, f"{backup_id}.zip")
-    if not os.path.exists(zip_path):
-        raise FileNotFoundError(f"Backup archive not found: {zip_path!r}")
+    enc_path = os.path.join(CLOUD_DIR, f"{backup_id}.zip.enc")
+    if not os.path.exists(enc_path):
+        raise FileNotFoundError(f"Backup archive not found: {enc_path!r}")
 
-    # Safe extraction – reject any entry whose resolved path escapes RESTORE_DIR
-    restore_dir_real = os.path.realpath(RESTORE_DIR)
-    with zipfile.ZipFile(zip_path, "r") as zipf:
-        for member in zipf.infolist():
-            dest_path = os.path.realpath(os.path.join(RESTORE_DIR, member.filename))
-            if os.path.commonpath([dest_path, restore_dir_real]) != restore_dir_real:
-                raise ValueError(f"Unsafe zip entry rejected: {member.filename!r}")
-            zipf.extract(member, RESTORE_DIR)
+    # Integrity check before decryption
+    expected_checksum = db_utils.get_checksum(backup_id)
+    if expected_checksum:
+        verify_integrity(enc_path, expected_checksum)
+
+    # Decrypt to a temporary ZIP, then extract safely
+    with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as tmp:
+        tmp_zip = tmp.name
+    try:
+        decrypt_file(enc_path, tmp_zip)
+
+        # Safe extraction – reject any entry whose resolved path escapes RESTORE_DIR
+        restore_dir_real = os.path.realpath(RESTORE_DIR)
+        with zipfile.ZipFile(tmp_zip, "r") as zipf:
+            for member in zipf.infolist():
+                dest_path = os.path.realpath(os.path.join(RESTORE_DIR, member.filename))
+                if os.path.commonpath([dest_path, restore_dir_real]) != restore_dir_real:
+                    raise ValueError(f"Unsafe zip entry rejected: {member.filename!r}")
+                zipf.extract(member, RESTORE_DIR)
+    finally:
+        if os.path.exists(tmp_zip):
+            os.remove(tmp_zip)
 
     db_utils.increment_restore_count(backup_id)
     db_utils.log_action("BACKUP_RESTORED", backup_id, user_id)

@@ -1,0 +1,6 @@
+Q1 2026 Summary
+===============
+Total backups created : 28
+Total restores        : 15
+Failed access attempts: 12
+Storage used          : 1.4 GB

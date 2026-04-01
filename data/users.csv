@@ -1,6 +1,15 @@
-﻿USER_ID,NAME,ROLE ,DEPARTMENT,LOCATION,DEVICE
-U101,Arjun Sharma,Admin,IT,Office,Corporate
-U102,Priya Patel,Owner,Finance,Office,Corporate
-U103,Ishaan Iyer,Restorer,Operations,Remote,Personal
-U104,Ananya Reddy,Viewer,Marketing,Office,Corporate
-U105,Rahul Verma,Admin,IT,Remote,Personal
+USER_ID,NAME,ROLE,DEPARTMENT,LOCATION,DEVICE,EMAIL,ACTIVE
+U101,Arjun Sharma,Admin,IT,Office,Corporate,arjun.sharma@company.com,TRUE
+U102,Priya Patel,Owner,Finance,Office,Corporate,priya.patel@company.com,TRUE
+U103,Ishaan Iyer,Restorer,Operations,Remote,Personal,ishaan.iyer@company.com,TRUE
+U104,Ananya Reddy,Viewer,Marketing,Office,Corporate,ananya.reddy@company.com,TRUE
+U105,Rahul Verma,Admin,IT,Remote,Personal,rahul.verma@company.com,TRUE
+U106,Divya Nair,Owner,HR,Office,Corporate,divya.nair@company.com,TRUE
+U107,Karan Mehta,Restorer,Operations,Remote,Personal,karan.mehta@company.com,TRUE
+U108,Sneha Gupta,Viewer,Sales,Office,Corporate,sneha.gupta@company.com,TRUE
+U109,Vikram Singh,Owner,Engineering,Remote,Corporate,vikram.singh@company.com,TRUE
+U110,Pooja Joshi,Admin,IT,Office,Corporate,pooja.joshi@company.com,TRUE
+U111,Amit Kumar,Restorer,Support,Remote,Personal,amit.kumar@company.com,FALSE
+U112,Meera Pillai,Viewer,Legal,Office,Corporate,meera.pillai@company.com,TRUE
+U113,Rohan Desai,Owner,Product,Office,Corporate,rohan.desai@company.com,TRUE
+U114,Neha Chaudhary,Restorer,DevOps,Remote,Corporate,neha.chaudhary@company.com,TRUE

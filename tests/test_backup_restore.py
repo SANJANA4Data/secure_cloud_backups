@@ -11,6 +11,9 @@ import utils.db_utils as db_utils
 from scripts.backup_script import backup_folder
 from scripts.restore_script import restore_backup
 
+# Fixed test encryption key (64 hex chars = 32 bytes)
+_TEST_KEY = "a" * 64
+
 
 @pytest.fixture()
 def workspace(tmp_path, monkeypatch):
@@ -29,6 +32,7 @@ def workspace(tmp_path, monkeypatch):
     monkeypatch.setattr("scripts.backup_script.CLOUD_DIR",    str(cloud))
     monkeypatch.setattr("scripts.restore_script.CLOUD_DIR",   str(cloud))
     monkeypatch.setattr("scripts.restore_script.RESTORE_DIR", str(restore))
+    monkeypatch.setenv("BACKUP_ENCRYPTION_KEY", _TEST_KEY)
 
     db_utils.init_db()
     db_utils.init_audit_log()
@@ -36,14 +40,20 @@ def workspace(tmp_path, monkeypatch):
     return {"source": source, "cloud": cloud, "restore": restore}
 
 
-def test_backup_creates_zip_and_db_record(workspace, monkeypatch):
+def test_backup_creates_encrypted_archive_and_db_record(workspace, monkeypatch):
     monkeypatch.setattr("scripts.backup_script.enforce_rbac", lambda *a, **kw: None)
     backup_id = backup_folder("U101", str(workspace["source"]))
 
-    zip_path = workspace["cloud"] / f"{backup_id}.zip"
-    assert zip_path.exists(), "ZIP archive was not created"
+    enc_path = workspace["cloud"] / f"{backup_id}.zip.enc"
+    assert enc_path.exists(), "Encrypted archive was not created"
+    # Plain ZIP must not be left on disk
+    assert not (workspace["cloud"] / f"{backup_id}.zip").exists(), "Plain ZIP must be deleted"
 
-    with zipfile.ZipFile(str(zip_path)) as zf:
+    # Decrypt and verify contents
+    from utils.crypto import decrypt_file
+    tmp_zip = str(workspace["cloud"] / "verify.zip")
+    decrypt_file(str(enc_path), tmp_zip)
+    with zipfile.ZipFile(tmp_zip) as zf:
         names = zf.namelist()
     assert "file1.txt" in names
     assert os.path.join("sub", "file2.txt") in names
@@ -52,6 +62,8 @@ def test_backup_creates_zip_and_db_record(workspace, monkeypatch):
     assert len(rows) == 1
     assert rows[0][0] == backup_id
     assert rows[0][1] == "U101"
+    # checksum must be stored
+    assert rows[0][7] != ""
 
     actions = [row[1] for row in db_utils.list_audit_log()]
     assert "BACKUP_CREATED" in actions
@@ -90,9 +102,18 @@ def test_restore_rejects_path_traversal(workspace, monkeypatch):
     """A malicious ZIP entry that escapes RESTORE_DIR must raise ValueError."""
     monkeypatch.setattr("scripts.restore_script.enforce_rbac", lambda *a, **kw: None)
 
-    evil_zip = workspace["cloud"] / "BEVIL.zip"
-    with zipfile.ZipFile(str(evil_zip), "w") as zf:
+    # Create a malicious ZIP, encrypt it, register a DB record so restore can find it
+    evil_zip = str(workspace["cloud"] / "BEVIL.zip")
+    enc_path = str(workspace["cloud"] / "BEVIL.zip.enc")
+    with zipfile.ZipFile(evil_zip, "w") as zf:
         zf.writestr("../../evil.txt", "pwned")
+    from utils.crypto import encrypt_file
+    from utils.integrity import sha256_file
+    encrypt_file(evil_zip, enc_path)
+    os.remove(evil_zip)
+    checksum = sha256_file(enc_path)
+    db_utils.insert_backup("BEVIL", "U101", 1, os.path.getsize(enc_path),
+                           folder_path="/tmp/evil", checksum=checksum)
 
     with pytest.raises(ValueError, match="Unsafe zip entry"):
         restore_backup("BEVIL", "U103")
