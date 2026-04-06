@@ -7,6 +7,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
 from utils import db_utils
+from utils.crypto import decrypt_file   # <-- NEW import
 
 # Initialize both tables at startup
 db_utils.init_db()
@@ -19,15 +20,24 @@ def restore_backup(backup_id, user_id="U101"):
     # Ensure restore folder exists
     os.makedirs(RESTORE_DIR, exist_ok=True)
 
-    # Path to the backup ZIP
-    zip_path = os.path.join(CLOUD_DIR, f"{backup_id}.zip")
-    if not os.path.exists(zip_path):
-        print(f"Backup {backup_id} not found.")
+    # Path to the encrypted backup
+    enc_path = os.path.join(CLOUD_DIR, f"{backup_id}.zip.enc")
+    if not os.path.exists(enc_path):
+        print(f"Encrypted backup {backup_id} not found.")
         return
 
-    # Extract the ZIP into restore_output
-    with zipfile.ZipFile(zip_path, "r") as zipf:
+    # Temporary decrypted ZIP
+    temp_zip = os.path.join(RESTORE_DIR, "temp_restore.zip")
+
+    # Decrypt the backup first
+    decrypt_file(enc_path, temp_zip)
+
+    # Extract the decrypted ZIP into restore_output
+    with zipfile.ZipFile(temp_zip, "r") as zipf:
         zipf.extractall(RESTORE_DIR)
+
+    # Clean up temp file
+    os.remove(temp_zip)
 
     # Increment restore count in database
     db_utils.increment_restore_count(backup_id)
