@@ -8,6 +8,8 @@ DB_PATH = os.path.join(DATA_DIR, "backups.db")
 
 
 def _count_table_rows(conn, table_name):
+    if table_name not in {"backups", "audit_log"}:
+        raise ValueError(f"Unsupported table: {table_name}")
     cur = conn.cursor()
     cur.execute(f"SELECT COUNT(*) FROM {table_name}")
     return cur.fetchone()[0]

@@ -4,10 +4,9 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
 def _get_key() -> bytes:
     raw_key = os.getenv("SCB_AES_KEY")
-    if raw_key:
-        key = raw_key.encode("utf-8")
-    else:
-        key = b"SECURE_CLOUD_BACKUPS_AES256_KEY!"
+    if not raw_key:
+        raise ValueError("SCB_AES_KEY environment variable must be set to a 32-byte value.")
+    key = raw_key.encode("utf-8")
     if len(key) != 32:
         raise ValueError("AES-256 key must be exactly 32 bytes.")
     return key

@@ -1,4 +1,5 @@
 import os
+import secrets
 
 from scripts.ai_role_suggester import suggest_roles
 from scripts.anomaly_detector import detect_anomalies
@@ -16,6 +17,9 @@ TEST_DATA_DIR = os.path.join(DATA_DIR, "test_data")
 
 def run_demo():
     print("=== SECURE CLOUD BACKUPS DEMO START ===")
+    if "SCB_AES_KEY" not in os.environ:
+        os.environ["SCB_AES_KEY"] = secrets.token_hex(16)
+        print("SCB_AES_KEY not set. Generated ephemeral demo key.")
 
     db_utils.init_db()
     db_utils.init_audit_log()

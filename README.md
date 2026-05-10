@@ -27,6 +27,7 @@ Secure backup-and-restore prototype with encryption, integrity checks, access co
 Minimum (current code):
 - Python 3.10+
 - `cryptography`
+- `SCB_AES_KEY` environment variable set to a 32-character key (demo auto-generates ephemeral key when unset)
 
 Optional for advanced visual/ML enhancements:
 - `pandas`
