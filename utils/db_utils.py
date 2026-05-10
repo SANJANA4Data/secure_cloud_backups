@@ -23,6 +23,10 @@ def init_db():
             checksum TEXT
         )
     """)
+    cursor.execute("PRAGMA table_info(backups)")
+    columns = {row[1] for row in cursor.fetchall()}
+    if "checksum" not in columns:
+        cursor.execute("ALTER TABLE backups ADD COLUMN checksum TEXT")
     conn.commit()
     conn.close()
 
