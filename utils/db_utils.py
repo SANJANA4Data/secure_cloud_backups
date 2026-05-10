@@ -156,7 +156,7 @@ def load_backups_catalog_from_csv(csv_path: str | None = None) -> None:
                     row.get("Version"),
                     row.get("File_List"),
                     row.get("Size"),
-                    int(row.get("Restore_Count") or 0),
+                    int((row.get("Restore_Count") or "0").strip() or "0"),
                 ),
             )
 

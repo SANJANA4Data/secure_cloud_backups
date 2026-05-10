@@ -61,54 +61,82 @@ function renderJson(container, data) {
 
 async function loadBackups() {
   if (!state.userId) return;
-  const catalog = await fetchJson(`/api/backups/catalog?user_id=${state.userId}`);
-  renderTable(backupsOutput, catalog);
+  try {
+    const catalog = await fetchJson(`/api/backups/catalog?user_id=${state.userId}`);
+    renderTable(backupsOutput, catalog);
+  } catch (error) {
+    backupsOutput.textContent = error.message;
+  }
 }
 
 async function loadAccessLog() {
   if (!state.userId) return;
-  const log = await fetchJson(`/api/access-log?user_id=${state.userId}`);
-  renderTable(accessLogOutput, log);
+  try {
+    const log = await fetchJson(`/api/access-log?user_id=${state.userId}`);
+    renderTable(accessLogOutput, log);
+  } catch (error) {
+    accessLogOutput.textContent = error.message;
+  }
 }
 
 async function loadAuditLog() {
   if (!state.userId) return;
-  const log = await fetchJson(`/api/audit-log?user_id=${state.userId}`);
-  renderTable(auditLogOutput, log);
+  try {
+    const log = await fetchJson(`/api/audit-log?user_id=${state.userId}`);
+    renderTable(auditLogOutput, log);
+  } catch (error) {
+    auditLogOutput.textContent = error.message;
+  }
 }
 
 async function loadAnomalies() {
   if (!state.userId) return;
-  const data = await fetchJson(`/api/anomalies?user_id=${state.userId}`);
-  renderTable(anomaliesOutput, data);
+  try {
+    const data = await fetchJson(`/api/anomalies?user_id=${state.userId}`);
+    renderTable(anomaliesOutput, data);
+  } catch (error) {
+    anomaliesOutput.textContent = error.message;
+  }
 }
 
 async function restoreBackup() {
   if (!state.userId) return;
   const backupId = document.getElementById("restore-id").value.trim();
   if (!backupId) return;
-  const result = await fetchJson("/api/restore", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ user_id: state.userId, backup_id: backupId }),
-  });
-  renderJson(restoreOutput, result);
+  try {
+    const result = await fetchJson("/api/restore", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id: state.userId, backup_id: backupId }),
+    });
+    renderJson(restoreOutput, result);
+  } catch (error) {
+    restoreOutput.textContent = error.message;
+  }
 }
 
 async function sendChat() {
   if (!state.userId) return;
   const message = document.getElementById("chat-message").value.trim();
   if (!message) return;
-  const result = await fetchJson("/api/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ user_id: state.userId, message }),
-  });
-  renderJson(chatOutput, result);
+  try {
+    const result = await fetchJson("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id: state.userId, message }),
+    });
+    renderJson(chatOutput, result);
+  } catch (error) {
+    chatOutput.textContent = error.message;
+  }
 }
 
 async function seedData() {
-  await fetchJson("/api/init-data", { method: "POST" });
+  try {
+    await fetchJson("/api/init-data", { method: "POST" });
+  } catch (error) {
+    userStatus.textContent = error.message;
+  }
 }
 
 setUserButton.addEventListener("click", setUser);
