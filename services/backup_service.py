@@ -11,7 +11,13 @@ def backup_folder(user_id: str, folder_path: str) -> dict:
     db_utils.init_all()
     config.ensure_data_dirs()
 
-    if not os.path.isdir(folder_path):
+    try:
+        safe_path = config.resolve_under_data(folder_path)
+    except ValueError:
+        db_utils.log_action("BACKUP_DENIED", None, user_id, result="INVALID_PATH")
+        return {"status": "invalid_path", "message": "Folder path must be under data directory."}
+
+    if not os.path.isdir(safe_path):
         db_utils.log_action("BACKUP_DENIED", None, user_id, result="INVALID_PATH")
         return {"status": "invalid_path", "message": "Folder path does not exist."}
 
@@ -20,10 +26,10 @@ def backup_folder(user_id: str, folder_path: str) -> dict:
     zip_path = config.CLOUD_DIR / f"{backup_id}.zip"
 
     with zipfile.ZipFile(zip_path, "w") as zipf:
-        for root, _, files in os.walk(folder_path):
+        for root, _, files in os.walk(safe_path):
             for file in files:
                 full_path = os.path.join(root, file)
-                arcname = os.path.relpath(full_path, folder_path)
+                arcname = os.path.relpath(full_path, safe_path)
                 zipf.write(full_path, arcname)
 
     enc_path = f"{zip_path}.enc"
@@ -57,9 +63,9 @@ def restore_backup(backup_id: str, user_id: str) -> dict:
     temp_zip = config.RESTORE_DIR / "temp_restore.zip"
     try:
         decrypt_file(str(enc_path), str(temp_zip))
-    except ValueError as exc:
-        db_utils.log_action("RESTORE_FAILED", backup_id, user_id, result=str(exc))
-        return {"status": "decrypt_failed", "message": str(exc)}
+    except ValueError:
+        db_utils.log_action("RESTORE_FAILED", backup_id, user_id, result="DECRYPT_FAILED")
+        return {"status": "decrypt_failed", "message": "Unable to decrypt the backup."}
 
     with zipfile.ZipFile(temp_zip, "r") as zipf:
         zipf.extractall(config.RESTORE_DIR)

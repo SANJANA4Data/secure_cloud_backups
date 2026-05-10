@@ -259,11 +259,14 @@ def get_backup_catalog(backup_id: str) -> dict[str, Any] | None:
 
 
 def list_access_log(limit: int | None = None) -> list[dict[str, Any]]:
-    query = "SELECT * FROM access_log ORDER BY timestamp DESC"
-    if limit:
-        query += f" LIMIT {int(limit)}"
     with _connect() as conn:
-        cursor = conn.execute(query)
+        if limit:
+            cursor = conn.execute(
+                "SELECT * FROM access_log ORDER BY timestamp DESC LIMIT ?",
+                (int(limit),),
+            )
+        else:
+            cursor = conn.execute("SELECT * FROM access_log ORDER BY timestamp DESC")
         return _rows_to_dicts(cursor, cursor.fetchall())
 
 
@@ -281,11 +284,14 @@ def log_action(action: str, backup_id: str | None, user_id: str | None, result: 
 
 
 def list_audit_log(limit: int | None = None) -> list[dict[str, Any]]:
-    query = "SELECT * FROM audit_log ORDER BY timestamp DESC"
-    if limit:
-        query += f" LIMIT {int(limit)}"
     with _connect() as conn:
-        cursor = conn.execute(query)
+        if limit:
+            cursor = conn.execute(
+                "SELECT * FROM audit_log ORDER BY timestamp DESC LIMIT ?",
+                (int(limit),),
+            )
+        else:
+            cursor = conn.execute("SELECT * FROM audit_log ORDER BY timestamp DESC")
         return _rows_to_dicts(cursor, cursor.fetchall())
 
 

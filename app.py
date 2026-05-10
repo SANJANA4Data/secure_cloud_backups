@@ -4,6 +4,7 @@ import time
 from typing import Any
 
 from flask import Flask, jsonify, render_template, request
+from werkzeug.exceptions import HTTPException
 
 from chatbot import handle_message
 from services.backup_service import backup_folder, restore_backup
@@ -169,8 +170,13 @@ def create_backup():
         return jsonify({"error": "forbidden", "message": reason}), 403
     try:
         safe_path = config.resolve_under_data(folder_path)
-    except ValueError as exc:
-        return jsonify({"error": "invalid_path", "message": str(exc)}), 400
+    except ValueError:
+        return jsonify(
+            {
+                "error": "invalid_path",
+                "message": "Folder path must be under data directory.",
+            }
+        ), 400
     result = backup_folder(user_id, str(safe_path))
     return jsonify(result)
 
@@ -201,6 +207,14 @@ def chat():
     ensure_seed_data()
     response = handle_message(user_id, message)
     return jsonify(response)
+
+
+@app.errorhandler(Exception)
+def handle_unexpected_error(error):
+    if isinstance(error, HTTPException):
+        return error
+    app.logger.exception("Unhandled error: %s", error)
+    return jsonify({"error": "server_error", "message": "An unexpected error occurred."}), 500
 
 
 if __name__ == "__main__":
