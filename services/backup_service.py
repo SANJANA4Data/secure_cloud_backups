@@ -7,15 +7,26 @@ from utils.crypto import decrypt_file, encrypt_file
 from utils.integrity import calculate_checksum
 
 
-def backup_folder(user_id: str, folder_path: str) -> dict:
+ALLOWED_BACKUP_FOLDERS = {
+    "test_data": "test_data",
+}
+
+
+def _resolve_backup_folder(folder_key: str) -> str | None:
+    folder_name = ALLOWED_BACKUP_FOLDERS.get(folder_key)
+    if not folder_name:
+        return None
+    return str(config.DATA_DIR / folder_name)
+
+
+def backup_folder(user_id: str, folder_key: str = "test_data") -> dict:
     db_utils.init_all()
     config.ensure_data_dirs()
 
-    try:
-        safe_path = config.resolve_under_data(folder_path)
-    except ValueError:
-        db_utils.log_action("BACKUP_DENIED", None, user_id, result="INVALID_PATH")
-        return {"status": "invalid_path", "message": "Folder path must be under data directory."}
+    safe_path = _resolve_backup_folder(folder_key)
+    if not safe_path:
+        db_utils.log_action("BACKUP_DENIED", None, user_id, result="INVALID_FOLDER")
+        return {"status": "invalid_path", "message": "Folder key is not allowed."}
 
     if not os.path.isdir(safe_path):
         db_utils.log_action("BACKUP_DENIED", None, user_id, result="INVALID_PATH")

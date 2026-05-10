@@ -4,6 +4,7 @@ from pathlib import Path
 
 from cryptography.fernet import Fernet
 
+from services import backup_service
 from services.backup_service import backup_folder, restore_backup
 from tests.test_helpers import TempConfig
 
@@ -16,7 +17,8 @@ class BackupServiceTests(unittest.TestCase):
             sample_dir.mkdir(parents=True, exist_ok=True)
             (sample_dir / "file.txt").write_text("backup content", encoding="utf-8")
 
-            result = backup_folder("U001", str(sample_dir))
+            backup_service.ALLOWED_BACKUP_FOLDERS["sample_data"] = "sample_data"
+            result = backup_folder("U001", folder_key="sample_data")
             self.assertIn("backup_id", result)
 
             restore_result = restore_backup(result["backup_id"], "U001")

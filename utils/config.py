@@ -17,10 +17,3 @@ def ensure_data_dirs():
     CLOUD_DIR.mkdir(parents=True, exist_ok=True)
     RESTORE_DIR.mkdir(parents=True, exist_ok=True)
 
-
-def resolve_under_data(path: str | os.PathLike) -> Path:
-    candidate = Path(path).resolve()
-    data_root = DATA_DIR.resolve()
-    if data_root not in candidate.parents and candidate != data_root:
-        raise ValueError("Path must be within the data directory")
-    return candidate

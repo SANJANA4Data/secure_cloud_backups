@@ -43,7 +43,7 @@ All API routes require a `user_id` query parameter or JSON field unless noted.
 - `GET /api/access-log`
 - `GET /api/audit-log`
 - `GET /api/anomalies`
-- `POST /api/backup` (`user_id`, `folder_path`)
+- `POST /api/backup` (`user_id`, `folder_key`, default `test_data`)
 - `POST /api/restore` (`user_id`, `backup_id`)
 - `POST /api/chat` (`user_id`, `message`)
 

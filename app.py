@@ -161,23 +161,14 @@ def list_anomalies():
 def create_backup():
     payload = request.json or {}
     user_id = payload.get("user_id")
-    folder_path = payload.get("folder_path")
-    if not user_id or not folder_path:
-        return jsonify({"error": "missing_fields", "message": "user_id and folder_path required"}), 400
+    folder_key = payload.get("folder_key", "test_data")
+    if not user_id:
+        return jsonify({"error": "missing_fields", "message": "user_id required"}), 400
     allowed, reason = db_utils.check_access(user_id, "BACKUP", backup_owner_id=user_id)
     if not allowed:
         db_utils.log_action("BACKUP_DENIED", None, user_id, result=reason)
         return jsonify({"error": "forbidden", "message": reason}), 403
-    try:
-        safe_path = config.resolve_under_data(folder_path)
-    except ValueError:
-        return jsonify(
-            {
-                "error": "invalid_path",
-                "message": "Folder path must be under data directory.",
-            }
-        ), 400
-    result = backup_folder(user_id, str(safe_path))
+    result = backup_folder(user_id, folder_key=folder_key)
     return jsonify(result)
 
 
