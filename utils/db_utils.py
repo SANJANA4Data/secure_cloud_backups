@@ -1,5 +1,5 @@
-import csv
 import sqlite3
+import csv
 from datetime import datetime
 from typing import Any, Iterable
 
