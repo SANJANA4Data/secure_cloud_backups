@@ -1,13 +1,14 @@
-from utils.crypto import encrypt_file
-from utils.integrity import calculate_checksum   # <-- NEW import
 import os
 import sys
 import zipfile
 from datetime import datetime
-import utils
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
+
+import utils
+from utils.crypto import encrypt_file
+from utils.integrity import calculate_checksum
 
 CLOUD_DIR = os.path.join(BASE_DIR, "data", "cloud_storage")
 
@@ -43,6 +44,7 @@ def backup_folder(user_id, folder_path):
     utils.db_utils.insert_backup(backup_id, user_id, version=1, size=size, checksum=checksum)
 
     print(f"Encrypted backup created: {backup_id}, size={size} bytes, checksum={checksum}")
+    return backup_id, checksum
 
 if __name__ == "__main__":
     test_folder = os.path.join(BASE_DIR, "data", "test_data")

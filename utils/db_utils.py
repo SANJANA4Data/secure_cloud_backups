@@ -1,8 +1,10 @@
 import sqlite3
 import csv
 from datetime import datetime
+import os
 
-DB_PATH = "data/backups.db"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, "data", "backups.db")
 
 # -----------------------------
 # Backup metadata functions
@@ -28,8 +30,14 @@ def insert_backup(backup_id, user_id, version, size, checksum=None):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     timestamp = datetime.now().isoformat()
-    cursor.execute("INSERT INTO backups VALUES (?, ?, ?, ?, ?, ?, ?)",
-                   (backup_id, user_id, timestamp, version, size, 0, checksum))
+    cursor.execute(
+        """
+        INSERT OR REPLACE INTO backups
+        (backup_id, user_id, timestamp, version, size, restore_count, checksum)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """,
+        (backup_id, user_id, timestamp, version, size, 0, checksum),
+    )
     conn.commit()
     conn.close()
 
@@ -52,6 +60,15 @@ def get_checksum(backup_id):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("SELECT checksum FROM backups WHERE backup_id=?", (backup_id,))
+    row = cursor.fetchone()
+    conn.close()
+    return row[0] if row else None
+
+
+def get_backup_owner(backup_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("SELECT user_id FROM backups WHERE backup_id=?", (backup_id,))
     row = cursor.fetchone()
     conn.close()
     return row[0] if row else None
@@ -116,7 +133,9 @@ def init_users():
     conn.commit()
     conn.close()
 
-def load_users_from_csv(csv_path="data/test_data/users.csv"):
+def load_users_from_csv(csv_path="data/users.csv"):
+    if not os.path.isabs(csv_path):
+        csv_path = os.path.join(BASE_DIR, csv_path)
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     with open(csv_path, newline="") as f:
@@ -161,6 +180,20 @@ def check_access(user_id, action, department=None):
 
     return False
 
+
+def check_restore_access(user_id, backup_id):
+    role, dept, _, device = get_user_attributes(user_id)
+    owner_id = get_backup_owner(backup_id)
+    if not role:
+        return False, "Unknown user"
+    if role == "Admin":
+        return True, "Admin access"
+    if role == "Owner" and owner_id == user_id:
+        return True, "Owner access to own backup"
+    if role == "Restorer" and device == "Corporate":
+        return True, "Restorer on corporate device"
+    return False, "RBAC/ABAC policy denied"
+
 # -----------------------------
 # Anomaly detection
 # -----------------------------
@@ -187,3 +220,23 @@ def detect_anomalies():
 
     conn.close()
     return anomalies
+
+
+def ingest_access_log_csv(csv_path):
+    if not os.path.isabs(csv_path):
+        csv_path = os.path.join(BASE_DIR, csv_path)
+
+    if not os.path.exists(csv_path):
+        return 0
+
+    count = 0
+    with open(csv_path, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            action = row.get("Action", "").upper()
+            backup_id = row.get("Backup_ID")
+            user_id = row.get("User_ID")
+            result = row.get("Status", "UNKNOWN").upper()
+            log_action(action, backup_id, user_id, result=result)
+            count += 1
+    return count
