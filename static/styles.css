@@ -1,0 +1,81 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  background: #f7f8fb;
+  color: #1a1a1a;
+}
+
+header {
+  padding: 24px 32px;
+  background: #12263a;
+  color: #ffffff;
+}
+
+header h1 {
+  margin: 0 0 8px;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+  padding: 16px 32px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  margin: 16px 32px;
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.controls input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccd3dd;
+}
+
+.controls button {
+  background: #2f6fed;
+  color: #ffffff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.controls button:hover {
+  background: #1e55c5;
+}
+
+.output {
+  margin-top: 12px;
+  max-height: 280px;
+  overflow: auto;
+  font-size: 13px;
+  white-space: pre-wrap;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border-bottom: 1px solid #e6eaf0;
+  padding: 6px 4px;
+  text-align: left;
+}

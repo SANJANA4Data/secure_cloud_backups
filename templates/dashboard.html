@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Secure Cloud Backups Dashboard</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Secure Cloud Backups</h1>
+      <p>Chatbot + Dashboard for backup inventory, audit logs, and anomalies.</p>
+    </header>
+
+    <section class="card">
+      <h2>User Context</h2>
+      <div class="controls">
+        <label for="user-id">User ID</label>
+        <input id="user-id" type="text" placeholder="U001" />
+        <button id="set-user">Set User</button>
+        <button id="seed-data">Reload CSV Data</button>
+      </div>
+      <p id="user-status">No user selected.</p>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>Backups Inventory</h2>
+        <div class="controls">
+          <button id="load-backups">Load Backups</button>
+        </div>
+        <div id="backups-output" class="output"></div>
+      </div>
+
+      <div class="card">
+        <h2>Access Log</h2>
+        <div class="controls">
+          <button id="load-access-log">Load Access Log</button>
+        </div>
+        <div id="access-log-output" class="output"></div>
+      </div>
+
+      <div class="card">
+        <h2>Audit Log</h2>
+        <div class="controls">
+          <button id="load-audit-log">Load Audit Log</button>
+        </div>
+        <div id="audit-log-output" class="output"></div>
+      </div>
+
+      <div class="card">
+        <h2>Anomaly Detection</h2>
+        <div class="controls">
+          <button id="load-anomalies">Load Anomalies</button>
+        </div>
+        <div id="anomalies-output" class="output"></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>Restore Backup</h2>
+        <div class="controls">
+          <input id="restore-id" type="text" placeholder="Backup ID (B001)" />
+          <button id="restore-backup">Restore</button>
+        </div>
+        <div id="restore-output" class="output"></div>
+      </div>
+
+      <div class="card">
+        <h2>Chatbot</h2>
+        <div class="controls">
+          <input id="chat-message" type="text" placeholder="Ask about backups or logs..." />
+          <button id="send-chat">Send</button>
+        </div>
+        <div id="chat-output" class="output"></div>
+      </div>
+    </section>
+
+    <script src="/static/dashboard.js"></script>
+  </body>
+</html>

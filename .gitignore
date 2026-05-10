@@ -10,3 +10,8 @@ __pycache__/
 
 # Ignore database files
 *.db
+
+# Ignore generated secrets and restore output
+data/secret.key
+data/restore_output/
+data/cloud_storage/

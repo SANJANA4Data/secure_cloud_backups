@@ -1,15 +1,22 @@
-import pandas as pd
+import os
 import random
+import sys
+
+import pandas as pd
 from faker import Faker
-from pathlib import Path
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
+
+from utils import config
 
 fake = Faker()
 
 # Paths
-data_path = Path(__file__).parent.parent / "data"
-users_file = data_path / "users.csv"
-backups_file = data_path / "backups.csv"
-logs_file = data_path / "access_log.csv"
+config.ensure_data_dirs()
+users_file = config.CSV_USERS_PATH
+backups_file = config.CSV_BACKUPS_PATH
+logs_file = config.CSV_ACCESS_LOG_PATH
 
 # --- USERS ---
 roles = ["Admin", "Owner", "Restorer", "Viewer"]
