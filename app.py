@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import time
 from typing import Any
 
@@ -210,4 +211,6 @@ def handle_unexpected_error(error):
 
 if __name__ == "__main__":
     ensure_seed_data()
-    app.run(debug=False, host="0.0.0.0", port=8000)
+    host = os.getenv("SCB_HOST", "127.0.0.1")
+    port = int(os.getenv("SCB_PORT", "8000"))
+    app.run(debug=False, host=host, port=port)

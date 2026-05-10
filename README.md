@@ -63,6 +63,7 @@ Each request is RBAC-validated and logged.
 - Encryption key: set `SCB_ENCRYPTION_KEY` or allow the app to write `data/secret.key`.
 - Storage paths are centralized in `utils/config.py`.
 - API endpoints enforce rate limiting (60 requests/minute per user).
+- Configure the web host/port via `SCB_HOST` and `SCB_PORT`.
 
 ## Testing
 

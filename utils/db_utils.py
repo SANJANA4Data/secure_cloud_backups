@@ -217,8 +217,8 @@ def list_backups() -> list[dict[str, Any]]:
 def get_backup_record(backup_id: str) -> dict[str, Any] | None:
     with _connect() as conn:
         cursor = conn.execute("SELECT * FROM backups WHERE backup_id = ?", (backup_id,))
-        row = cursor.fetchone()
-        return dict(zip([col[0] for col in cursor.description], row)) if row else None
+        rows = _rows_to_dicts(cursor, cursor.fetchall())
+        return rows[0] if rows else None
 
 
 def increment_restore_count(backup_id: str) -> None:
@@ -254,8 +254,8 @@ def list_users() -> list[dict[str, Any]]:
 def get_backup_catalog(backup_id: str) -> dict[str, Any] | None:
     with _connect() as conn:
         cursor = conn.execute("SELECT * FROM backups_catalog WHERE backup_id = ?", (backup_id,))
-        row = cursor.fetchone()
-        return dict(zip([col[0] for col in cursor.description], row)) if row else None
+        rows = _rows_to_dicts(cursor, cursor.fetchall())
+        return rows[0] if rows else None
 
 
 def list_access_log(limit: int | None = None) -> list[dict[str, Any]]:
