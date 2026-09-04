@@ -1,8 +1,10 @@
-import sqlite3
 import csv
+import os
+import sqlite3
 from datetime import datetime
 
-DB_PATH = "data/backups.db"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, "data", "backups.db")
 
 # -----------------------------
 # Backup metadata functions
@@ -21,6 +23,10 @@ def init_db():
             checksum TEXT
         )
     """)
+    cursor.execute("PRAGMA table_info(backups)")
+    columns = {row[1] for row in cursor.fetchall()}
+    if "checksum" not in columns:
+        cursor.execute("ALTER TABLE backups ADD COLUMN checksum TEXT")
     conn.commit()
     conn.close()
 
@@ -138,6 +144,7 @@ def get_user_role(user_id):
     return row[0] if row else None
 
 def get_user_attributes(user_id):
+    init_users()
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("SELECT role, department, location, device FROM users WHERE user_id=?", (user_id,))
