@@ -12,6 +12,7 @@ A Python prototype for secure cloud backup workflows with:
 - `/scripts/restore_script.py` — decrypts and restores backups, updates audit data
 - `/scripts/rbac_check.py` — runs RBAC checks against CSV datasets
 - `/scripts/generate_dataset.py` — generates synthetic CSV datasets
+- `/scripts/dashboard.py` — local dashboard for progress and activity visualization
 - `/utils/crypto.py` — file encryption/decryption helpers
 - `/utils/integrity.py` — SHA-256 checksum calculation
 - `/utils/db_utils.py` — SQLite schema, data operations, RBAC/anomaly helpers
@@ -52,6 +53,14 @@ python scripts/rbac_check.py
 ```bash
 python -m unittest discover -s tests -v
 ```
+
+### Run Dashboard
+
+```bash
+python scripts/dashboard.py --port 8080
+```
+
+Then open: `http://127.0.0.1:8080`
 
 ## Data and Storage
 
