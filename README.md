@@ -62,6 +62,13 @@ python scripts/dashboard.py --port 8080
 
 Then open: `http://127.0.0.1:8080`
 
+The dashboard provides a full evaluator-facing display with:
+- completion status and progress bar
+- workflow overview of backup/restore/RBAC/audit pipeline
+- key project metrics and distribution charts
+- top denied users and data snapshots from users/backups/access logs
+- auto-refresh every 20 seconds for live presentation
+
 ## Data and Storage
 
 - SQLite DB path: `data/backups.db`

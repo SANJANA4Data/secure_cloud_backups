@@ -75,10 +75,17 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(data["db_checksums"], 1)
         self.assertEqual(data["db_audit_events"], 1)
         self.assertEqual(data["top_denied_users"], [("U002", 2)])
+        self.assertIn("completion_percent", data)
+        self.assertGreaterEqual(data["completion_percent"], 80)
+        self.assertEqual(len(data["users_preview"]), 3)
+        self.assertEqual(len(data["backups_preview"]), 2)
+        self.assertEqual(len(data["logs_preview"]), 3)
 
     def test_render_dashboard_html(self):
         html_output = render_dashboard_html(collect_dashboard_data(data_dir=self.temp_dir))
-        self.assertIn("Secure Cloud Backups Dashboard", html_output)
+        self.assertIn("Evaluator Dashboard", html_output)
+        self.assertIn("Project completion status", html_output)
+        self.assertIn("Project workflow overview", html_output)
         self.assertIn("User role distribution", html_output)
         self.assertIn("Top denied users", html_output)
 
