@@ -1,0 +1,5 @@
+backups_total: 11
+audit_events_total: 9
+restores_total: 9
+denied_events_total: 0
+anomalies_total: 61

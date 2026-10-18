@@ -1,0 +1,372 @@
+{
+  "total_events": 800,
+  "anomaly_count": 61,
+  "anomalies": [
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U010",
+      "details": "Allowed restore on personal device for B276",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U075",
+      "details": "Allowed restore on personal device for B029",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U049",
+      "details": "Allowed restore on personal device for B062",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U085",
+      "details": "Allowed restore on personal device for B276",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U054",
+      "details": "Allowed restore on personal device for B046",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U075",
+      "details": "Allowed restore on personal device for B022",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U006",
+      "details": "Allowed restore on personal device for B100",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U094",
+      "details": "Allowed restore on personal device for B113",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U024",
+      "details": "Allowed restore on personal device for B210",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U063",
+      "details": "Allowed restore on personal device for B175",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U031",
+      "details": "Allowed restore on personal device for B137",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U063",
+      "details": "Allowed restore on personal device for B148",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U050",
+      "details": "Allowed restore on personal device for B173",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U050",
+      "details": "Allowed restore on personal device for B137",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U062",
+      "details": "Allowed restore on personal device for B173",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U083",
+      "details": "Allowed restore on personal device for B008",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U095",
+      "details": "Allowed restore on personal device for B205",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U002",
+      "details": "Allowed restore on personal device for B139",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U074",
+      "details": "Allowed restore on personal device for B040",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U008",
+      "details": "Allowed restore on personal device for B274",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U047",
+      "details": "Allowed restore on personal device for B084",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U041",
+      "details": "Allowed restore on personal device for B167",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U036",
+      "details": "Allowed restore on personal device for B126",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U015",
+      "details": "Allowed restore on personal device for B097",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U070",
+      "details": "Allowed restore on personal device for B130",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U040",
+      "details": "Allowed restore on personal device for B148",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U055",
+      "details": "Allowed restore on personal device for B198",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U045",
+      "details": "Allowed restore on personal device for B053",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U086",
+      "details": "Allowed restore on personal device for B204",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U010",
+      "details": "Allowed restore on personal device for B185",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U025",
+      "details": "Allowed restore on personal device for B010",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U081",
+      "details": "Allowed restore on personal device for B070",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U001",
+      "details": "Allowed restore on personal device for B104",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U030",
+      "details": "Allowed restore on personal device for B241",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U029",
+      "details": "Allowed restore on personal device for B198",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U080",
+      "details": "Allowed restore on personal device for B080",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U070",
+      "details": "Allowed restore on personal device for B251",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U045",
+      "details": "Allowed restore on personal device for B187",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U096",
+      "details": "Allowed restore on personal device for B248",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U016",
+      "details": "Allowed restore on personal device for B060",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U051",
+      "details": "Allowed restore on personal device for B251",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U014",
+      "details": "Allowed restore on personal device for B273",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U087",
+      "details": "Allowed restore on personal device for B104",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U057",
+      "details": "Allowed restore on personal device for B061",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U028",
+      "details": "Allowed restore on personal device for B207",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U058",
+      "details": "Allowed restore on personal device for B200",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U078",
+      "details": "Allowed restore on personal device for B079",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U022",
+      "details": "Allowed restore on personal device for B185",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U053",
+      "details": "Allowed restore on personal device for B105",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U079",
+      "details": "Allowed restore on personal device for B181",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U044",
+      "details": "Allowed restore on personal device for B143",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U072",
+      "details": "Allowed restore on personal device for B105",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U086",
+      "details": "Allowed restore on personal device for B281",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U100",
+      "details": "Allowed restore on personal device for B114",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U016",
+      "details": "Allowed restore on personal device for B042",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U036",
+      "details": "Allowed restore on personal device for B255",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U089",
+      "details": "Allowed restore on personal device for B157",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U081",
+      "details": "Allowed restore on personal device for B167",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U022",
+      "details": "Allowed restore on personal device for B062",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U090",
+      "details": "Allowed restore on personal device for B051",
+      "severity": "HIGH"
+    },
+    {
+      "type": "PERSONAL_DEVICE_RESTORE",
+      "user_id": "U083",
+      "details": "Allowed restore on personal device for B076",
+      "severity": "HIGH"
+    }
+  ]
+}

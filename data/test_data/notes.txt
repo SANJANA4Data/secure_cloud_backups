@@ -1,2 +1,2 @@
-Hello Backup Engine!
-This is a test file.
+This is a test backup file.
+It contains sample content for restore testing.

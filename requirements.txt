@@ -1,0 +1,7 @@
+cryptography
+pandas
+scikit-learn
+flask
+streamlit
+pytest
+boto3
