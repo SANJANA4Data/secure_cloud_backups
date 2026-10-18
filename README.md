@@ -25,6 +25,7 @@
 | **Testing** | Pytest | Automated test coverage (55 tests) |
 
 ---
+![App Dashboard Preview](dashboard_preview.png)
 
 ## 🚀 Getting Started
 
@@ -39,5 +40,5 @@
    .\.venv\Scripts\Activate.ps1
 
 
-   ![App Dashboard Preview](dashboard_preview.png)
+
    
