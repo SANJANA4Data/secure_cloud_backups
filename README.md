@@ -1,4 +1,8 @@
 # 🛡️ Enterprise Secure Cloud Backup & IAM Platform
+<img width="1696" height="836" alt="Screenshot 2026-10-19 002904" src="https://github.com/user-attachments/assets/f0d3569c-b2a6-451d-9818-b1ce801451da" />
+<img width="1725" height="891" alt="Screenshot 2026-10-19 002812" src="https://github.com/user-attachments/assets/ebd7062c-5c3d-4a03-b49d-cab6837a74ce" />
+
+
 
 > An end-to-end, production-ready cloud backup solution incorporating automated anomaly detection, machine learning-driven Role-Based Access Control (RBAC), cryptographic audit logging, and AWS S3 integration.
 
