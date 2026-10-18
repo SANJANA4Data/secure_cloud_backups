@@ -37,3 +37,7 @@
 1. **Activate Environment**
    ```powershell
    .\.venv\Scripts\Activate.ps1
+
+
+   ![App Dashboard Preview](dashboard_preview.png)
+   
